@@ -15,6 +15,10 @@ class CreateWatchersTable extends Migration
     {
         Schema::create('watchers', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('user_id')->unsigned()->index();
+            $table->integer('discussion_id')->unsigned()->index();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('discussion_id')->references('id')->on('discussions')->onDelete('cascade');
             $table->timestamps();
         });
     }

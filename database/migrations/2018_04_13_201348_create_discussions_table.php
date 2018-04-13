@@ -15,6 +15,14 @@ class CreateDiscussionsTable extends Migration
     {
         Schema::create('discussions', function (Blueprint $table) {
             $table->increments('id');
+            $table->boolean('is_active')->default(0);
+            $table->integer('channel_id')->unsigned()->index();
+            $table->integer('user_id')->unsigned()->index();
+            $table->string('title');
+            $table->string('slug');
+            $table->text('body');
+            $table->foreign('channel_id')->references('id')->on('channels')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
