@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Channel;
+use Session;
+use Auth;
+
+
 class channelsController extends Controller
 {
     /**
@@ -13,7 +18,7 @@ class channelsController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
