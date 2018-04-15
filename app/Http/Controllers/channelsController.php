@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use Channel;
 use Session;
-use Auth;
 
 
 class channelsController extends Controller
@@ -18,7 +17,9 @@ class channelsController extends Controller
      */
     public function index()
     {
+        $channels =Channel::all();
         
+        return view('admin.channels.index')->with('channels', $channels);
     }
 
     /**
@@ -28,7 +29,7 @@ class channelsController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.channels.index');
     }
 
     /**
@@ -39,7 +40,20 @@ class channelsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $this->validate($request, [
+            'title' => 'required|max:100'
+        ]);
+        
+        $channel =new Channel;
+        $channel->title =$request->title;
+        $channel->slug =str_slug($request->title);
+        $channel->save();
+        
+        Session::flash('channel_created', 'Channel Created Successfully');
+        
+        return redirect()->route('channels.index');
+        
     }
 
     /**
@@ -61,7 +75,9 @@ class channelsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $channel =Channel::find($id);
+        
+        return view('admin.channels.edit')->with('channel', $channel);
     }
 
     /**
@@ -73,7 +89,18 @@ class channelsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required|max:100'
+        ]);
+        
+        $channel =Channel::find($id);
+        $channel->title =$request->title;
+        $channel->slug =str_slug($request->title);
+        $channel->save();
+        
+        Session::flash('channel_updated', 'Channel Updated Successfully');
+        
+        return redirect()->route('channels.index');
     }
 
     /**
@@ -84,6 +111,12 @@ class channelsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $channel =Channel::find($id);
+        $channel->delete();
+        
+        Session::flash('channel_deleted', 'Channel Deleted Successfully');
+        
+        return redirect()->route('channels.index');
     }
+    
 }

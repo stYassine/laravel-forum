@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Discussion;
 use App\Channel;
+use App\Reply;
+use App\Like;
 
 
 class frontendController extends Controller

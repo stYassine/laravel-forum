@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Reply;
+use Auth;
+
 class repliesController extends Controller
 {
     /**
@@ -13,7 +16,9 @@ class repliesController extends Controller
      */
     public function index()
     {
-        //
+        $replies =Reply::all();
+        
+        return view('admin.replies.index')->with('replies', $replies);
     }
 
     /**
@@ -34,7 +39,20 @@ class repliesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $this->validate($request, [
+            'discussion_id' => 'required|integer',
+            'body' => 'required|min:3'
+        ]);
+        
+        $reply =new Reply;
+        $reply->is_active =0;
+        $reply->user_id =Auth::id();
+        $reply->discussion_id =$request->discussion_id;
+        $reply->body =$request->body;
+
+        return redirect()->back();
+        
     }
 
     /**
@@ -68,7 +86,16 @@ class repliesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'discussion_id' => 'required|integer',
+            'body' => 'required|min:3'
+        ]);
+        
+        $reply =Reply::find($id);
+        $reply->discussion_id =$request->discussion_id;
+        $reply->body =$request->body;
+
+        return redirect()->back();
     }
 
     /**
@@ -79,6 +106,12 @@ class repliesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+        $reply =Reply::find();
+        $reply->delete($id);
+        
+        return redirect()->back();
+        
     }
+    
 }

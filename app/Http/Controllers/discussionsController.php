@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Discussion;
+use App\Channel;
+use Auth;
+use Session;
+
+
 class discussionsController extends Controller
 {
     /**
@@ -13,7 +19,9 @@ class discussionsController extends Controller
      */
     public function index()
     {
-        //
+        $discussions =Discussion::all();
+        
+        return view('admin.discussions.index')->with('discussions', $discussions);
     }
 
     /**
@@ -23,7 +31,9 @@ class discussionsController extends Controller
      */
     public function create()
     {
-        //
+        $channels =Channel::all();
+        
+        return view('admin.discussions.index')->with('channels', $channels);
     }
 
     /**
@@ -34,7 +44,26 @@ class discussionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $this->validate($request, [
+            'is_active' => 'required|integer',
+            'channel_id' => 'required|integer',
+            'title' => 'required|min:3|max:255',
+            'body' => 'required|min:3'
+        ]);
+        
+        $discussion =new Discussion;
+        $discussion->is_active =$request->is_active;
+        $discussion->user_id =Auth::id();
+        $discussion->channel_id =$request->channel_id;
+        $discussion->title =$request->title;
+        $discussion->slug =str_slug($request->slug);
+        $discussion->body =$request->body;
+        $discussion->save();
+        
+        Session::flash('discussion_created', 'Discussion Created Successfully');
+        
+        return redirect()->route('discussions.index');
     }
 
     /**
@@ -56,7 +85,14 @@ class discussionsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $discussion =Discussion::find($id);
+        $channels =Channel::all();
+        
+        return view('admin.discussions.edit')->with([
+            'channels' => $channels,
+            'discussion' => $discussion
+        ]);
+        
     }
 
     /**
@@ -68,7 +104,25 @@ class discussionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'is_active' => 'required|integer',
+            'channel_id' => 'required|integer',
+            'title' => 'required|min:3|max:255',
+            'body' => 'required|min:3'
+        ]);
+        
+        $discussion =Discussion::find($id);
+        $discussion->is_active =$request->is_active;
+        $discussion->user_id =Auth::id();
+        $discussion->channel_id =$request->channel_id;
+        $discussion->title =$request->title;
+        $discussion->slug =str_slug($request->slug);
+        $discussion->body =$request->body;
+        $discussion->save();
+        
+        Session::flash('discussion_updated', 'Discussion Updated Successfully');
+        
+        return redirect()->route('discussions.index');
     }
 
     /**
@@ -79,6 +133,12 @@ class discussionsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $discussion =Discussion::find($id);
+        $discussion->save();
+        
+        Session::flash('discussion_deleted', 'Discussion Deleted Successfully');
+        
+        return redirect()->route('discussions.index');
     }
+    
 }

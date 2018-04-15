@@ -23,8 +23,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 ///////////////////////
 /// Admin
 ///////////////////////
-Route::group(['prefix' => 'admin'], function(){
+Route::group(['prefix' => 'dashboard'], function(){
 
+    Route::get('/', [
+        'uses' => 'DashboardController@dashboardPage',
+        'as' => 'dashboard'
+    ]);
+    
     /// Users
     Route::resource('users', 'UsersController');
     

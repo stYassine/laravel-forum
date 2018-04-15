@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\User;
+use Session;
+use Auth;
+use File;
+
+
 class UsersController extends Controller
 {
     /**
@@ -13,7 +19,10 @@ class UsersController extends Controller
      */
     public function index()
     {
-        //
+        $users =User::all();
+        
+        return view('admin.users.index')->with('users', $users);
+        
     }
 
     /**
@@ -23,7 +32,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.users.create');
     }
 
     /**
@@ -34,7 +43,34 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $this->validate($request, [
+            'is_active' => 'required|integer',
+            'is_admin' => 'required|integer',
+            'name' => 'required|max:255',
+            'email' => 'required|email',
+            'password' => 'required|min:3|max:255'
+        ]);
+        
+        $user =new User;
+        $user->name =$request->name;
+        $user->email =$request->email;
+        if($file =$request->file('avatar')){
+            
+            $image_name =time().$file->getClientOriginalName();
+            $file->move('uploads/avatars', $image_name);
+            
+            $user->avatar =$request->avatar;
+            
+        }
+        
+        $user->password =bcrypt($request->password);
+        $user->save();
+        
+        Session:flash('user_created', 'User Created Successfully');
+        
+        return redirect()->route('users.index');
+        
     }
 
     /**
@@ -56,7 +92,11 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        
+        $user =User::find($id);
+        
+        return view('admin.users.edit')->with('user', $user);
+        
     }
 
     /**
@@ -68,7 +108,34 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'is_active' => 'required|integer',
+            'is_admin' => 'required|integer',
+            'name' => 'required|max:255',
+            'email' => 'required|email'
+        ]);
+        
+        $user =User::find($id);
+        $user->name =$request->name;
+        $user->email =$request->email;
+        if($file =$request->file('avatar')){
+            
+            File::delete($user->avatar);
+            
+            $image_name =time().$file->getClientOriginalName();
+            $file->move('uploads/avatars', $image_name);
+            
+            $user->avatar =$request->avatar;
+            
+        }
+        if($request->has('password')){
+            $user->password =bcrypt($request->password);
+        }
+        $user->save();
+        
+        Session:flash('user_updated', 'User Updated Successfully');
+        
+        return redirect()->route('users.index');
     }
 
     /**
@@ -79,6 +146,14 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user =User::find($id);
+        File::delete($user->avatar);
+        $user->delete();
+        
+        Session:flash('user_deleted', 'User Deleted Successfully');
+        
+        return redirect()->route('users.index');
+        
     }
+    
 }

@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Like;
+use Auth;
+use Session;
+
 class likesController extends Controller
 {
     /**
@@ -13,7 +17,10 @@ class likesController extends Controller
      */
     public function index()
     {
-        //
+        $likes =Like::all();
+        
+        return view('admin.likes.index')->with('likes', $likes);
+        
     }
 
     /**
@@ -34,7 +41,18 @@ class likesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $this->validate($request, [
+            'reply_id' => 'required|integer'
+        ]);
+        
+        $like =new Like;
+        $like->user_id =Auth::id();
+        $like->reply_id =$request->reply_id;
+        
+        return redirect()->back();
+        
+        
     }
 
     /**
@@ -68,7 +86,15 @@ class likesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'reply_id' => 'required|integer'
+        ]);
+        
+        $like =Like::find($id);
+        $like->user_id =Auth::id();
+        $like->reply_id =$request->reply_id;
+        
+        return redirect()->back();
     }
 
     /**
@@ -79,6 +105,10 @@ class likesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $like =Like::find($id);
+        $like->delete();
+        
+        return redirect()->back();
+        
     }
 }
