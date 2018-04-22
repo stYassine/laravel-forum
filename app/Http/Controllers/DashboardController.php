@@ -18,13 +18,22 @@ class DashboardController extends Controller
     public function dashboardPage(){
         
         $users =User::all();
-        $discussions =User::all();
-        $channels =User::all();
-        $likes =User::all();
-        $replies =User::all();
-        watchers =User::all();
+        $discussions =Discussion::all();
+        $channels =Channel::all();
+        $likes =Like::all();
+        $replies =Reply::all();
+        $watchers =Watcher::all();
     
-        return view('admin.dashboard');
+        return view('admin.statics')->with([
+            'num_users' => $users->count(),
+            'num_discussions' => $discussions->count(),
+            'num_channels' => $channels->count(),
+            'num_likes' => $likes->count(),
+            'num_replies' => $replies->count(),
+            'num_watchers' => $watchers->count()
+        ]);
+        
+        
     }
     
 }

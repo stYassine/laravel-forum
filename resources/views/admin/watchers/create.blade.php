@@ -7,54 +7,35 @@
 <div class="col-lg-6 col-md-12">
     <div class="card">
         <div class="card-header" data-background-color="orange">
-            <h4 class="title">Create New User</h4>
-            <p class="category">You can create new user here</p>
+            <h4 class="title">Create New Watcher</h4>
+            <p class="category">You can create new watcher here</p>
         </div>
         <div class="card-content table-responsive">
             
             @include('admin.partials.includes')
             
-            <form action="{{ route('users.store') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('watchers.store') }}" method="post">
                 {{ csrf_field() }}
                 {{ method_field('POST') }}
                 
                 <div class="form-group">
-                    <label for="">Name</label>
-                    <input type="text" name="name" class="form-control">
-                </div>
-                
-                <div class="form-group">
-                    <label for="">Active</label>
+                    <label for="">User</label>
                     <select name="name" class="form-control">
                         <option value="">Choose</option>
-                        <option value="0">Active</option>
-                        <option value="1">Disactive</option>
+                        @foreach($users->all() as $user)
+                            <option value="{{ $user->id }}">{{ $user->email }}</option>
+                        @endforeach
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="">Role</label>
+                    <label for="">Discussion</label>
                     <select name="is_admin" class="form-control">
                         <option value="">Choose</option>
-                        <option value="0">Admin</option>
-                        <option value="1">Subscriber</option>
+                        @foreach($discussions->all() as $discussion)
+                            <option value="{{ $discussion->id }}">{{ $discussion->id }}</option>
+                        @endforeach
                     </select>
-                </div>
-                
-                
-                <div class="form-group">
-                    <label for="">Email</label>
-                    <input type="email" name="email" class="form-control">
-                </div>
-                
-                <div class="form-group">
-                    <label for="">Avatar</label>
-                    <input type="file" name="avatar" class="form-control">
-                </div>
-                
-                <div class="form-group">
-                    <label for="">Password</label>
-                    <input type="password" name="password" class="form-control">
                 </div>
                 
                 <div class="form-group">

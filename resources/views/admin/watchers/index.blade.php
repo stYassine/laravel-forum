@@ -8,30 +8,31 @@
         <div class="card-header" data-background-color="orange">
             <span class="pull-right">
                <h4>
-                <a href="{{ route('users.create') }}">Create New User</a>
+                <a href="{{ route('users.create') }}">Create New Watcher</a>
                 </h4>
             </span>
-            <h4 class="title">Users List</h4>
-            <p class="category">All Registerd Users</p>
+            <h4 class="title">Watchers List</h4>
+            <p class="category">All Watchers</p>
         </div>
         <div class="card-content table-responsive">
             <table class="table table-hover">
                 <thead class="text-warning">
                     <th>ID</th>
-                    <th>Name</th>
+                    <th>User Id</th>
+                    <th>Reply Id</th>
                     <th>Edit</th>
                     <th>Remove</th>
                 </thead>
                 <tbody>
-                   @if(isset($users))
-                       @foreach($users->all() as $user)
+                   @if(isset($watchers))
+                       @foreach($watchers->all() as $watcher)
                     <tr>
-                        <td>{{ $user->id }}</td>
-                        <td>{{ $user->name }}</td>
-                        <td><img src="{{ asset($user->avatar) }}" width="80px"></td>
-                        <td><a href="{{ route('users.edit', ['id' => $user->id]) }}" class="btn btn-info">Edit</a></td>
+                        <td>{{ $watcher->id }}</td>
+                        <td>{{ $watcher->user_id }}</td>
+                        <td>{{ $watcher->discussion_id }}</td>
+                        <td><a href="{{ route('watchers.edit', ['id' => $watcher->id]) }}" class="btn btn-info">Edit</a></td>
                         <td>
-                            <form action="{{ route('users.destroy', ['id' => $user->id]) }}" method="post">
+                            <form action="{{ route('watchers.destroy', ['id' => $watcher->id]) }}" method="post">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
                                 <button type="submit" class="btn btn-danger">Remove</button>

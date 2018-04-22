@@ -7,14 +7,14 @@
 <div class="col-lg-6 col-md-12">
     <div class="card">
         <div class="card-header" data-background-color="orange">
-            <h4 class="title">Edit Watcher</h4>
-            <p class="category">You can edit watcher here</p>
+            <h4 class="title">Create New Reply</h4>
+            <p class="category">You can create new reply here</p>
         </div>
         <div class="card-content table-responsive">
             
             @include('admin.partials.includes')
             
-            <form action="{{ route('watchers.update', ['id' => $watcher->id]) }}" method="post">
+            <form action="{{ route('replies.store') }}" method="post">
                 {{ csrf_field() }}
                 {{ method_field('POST') }}
                 
@@ -32,14 +32,14 @@
                     <label for="">Discussion</label>
                     <select name="is_admin" class="form-control">
                         <option value="">Choose</option>
-                        @foreach($discussions->all() as $discussion)
-                            <option value="{{ $discussion->id }}">{{ $discussion->id }}</option>
+                        @foreach($replies->all() as $reply)
+                            <option value="{{ $reply->id }}">{{ $reply->id }}</option>
                         @endforeach
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-info">Update</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
                 </div>
                 
             </form>

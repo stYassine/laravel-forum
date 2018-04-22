@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Reply;
+use App\User;
+use App\Discussion;
 use Auth;
+use Session;
 
 class repliesController extends Controller
 {
@@ -28,7 +31,15 @@ class repliesController extends Controller
      */
     public function create()
     {
-        //
+        
+        $users =User::all();
+        $discussions =Discussion::all();
+        
+        return view('admin.replies.index')->with([
+            'users' => $users,
+            'discussions' => $discussions
+        ]);
+        
     }
 
     /**
@@ -46,11 +57,12 @@ class repliesController extends Controller
         ]);
         
         $reply =new Reply;
-        $reply->is_active =0;
-        $reply->user_id =Auth::id();
+        $reply->is_active =$request->is_active;
+        $reply->user_id =$request->user_id;
         $reply->discussion_id =$request->discussion_id;
         $reply->body =$request->body;
-
+        $reply->save();
+        
         return redirect()->back();
         
     }
@@ -74,7 +86,16 @@ class repliesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $reply =Reply::find($id);
+        $users =User::all();
+        $discussions =Discussion::all();
+        
+        return view('admin.replies.edit')->with([
+            'reply' => $reply,
+            'users' => $users,
+            'discussions' => $discussions
+        ]);
+        
     }
 
     /**
@@ -94,7 +115,8 @@ class repliesController extends Controller
         $reply =Reply::find($id);
         $reply->discussion_id =$request->discussion_id;
         $reply->body =$request->body;
-
+        $reply->save();
+        
         return redirect()->back();
     }
 
@@ -107,7 +129,7 @@ class repliesController extends Controller
     public function destroy($id)
     {
         
-        $reply =Reply::find();
+        $reply =Reply::find($id);
         $reply->delete($id);
         
         return redirect()->back();

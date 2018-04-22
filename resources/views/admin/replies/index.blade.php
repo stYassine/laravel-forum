@@ -11,28 +11,28 @@
                 <a href="{{ route('users.create') }}">Create New User</a>
                 </h4>
             </span>
-            <h4 class="title">Likes List</h4>
-            <p class="category">All Users Likes</p>
+            <h4 class="title">Replies List</h4>
+            <p class="category">All Replies Likes</p>
         </div>
         <div class="card-content table-responsive">
             <table class="table table-hover">
                 <thead class="text-warning">
                     <th>ID</th>
-                    <th>User Name</th>
-                    <th>Reply Id</th>
+                    <th>Reply User</th>
+                    <th>discussion Id</th>
                     <th>Edit</th>
                     <th>Remove</th>
                 </thead>
                 <tbody>
-                   @if(isset($likes))
-                       @foreach($likes->all() as $like)
+                   @if(isset($replies))
+                       @foreach($replies->all() as $reply)
                     <tr>
-                        <td>{{ $like->id }}</td>
-                        <td>{{ $like->user_id }}</td>
-                        <td>{{ $like->reply_id }}</td>
-                        <td><a href="{{ route('likes.edit', ['id' => $like->id]) }}" class="btn btn-info">Edit</a></td>
+                        <td>{{ $reply->id }}</td>
+                        <td>{{ $reply->user->name }}</td>
+                        <td>{{ $reply->discussion->id }}</td>
+                        <td><a href="{{ route('replies.edit', ['id' => $reply->id]) }}" class="btn btn-info">Edit</a></td>
                         <td>
-                            <form action="{{ route('likes.destroy', ['id' => $like->id]) }}" method="post">
+                            <form action="{{ route('replies.destroy', ['id' => $reply->id]) }}" method="post">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
                                 <button type="submit" class="btn btn-danger">Remove</button>

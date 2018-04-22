@@ -49,8 +49,7 @@
                 
                 
                 <div class="form-group">
-                    <label for="">Avatar</label>
-                    <img src="{{ asset($user->avatar) }}" width="80px">
+                    <img src="{{ asset($user->avatar) }}" style="width:160px;">
                 </div>
                 
                 <div class="form-group">

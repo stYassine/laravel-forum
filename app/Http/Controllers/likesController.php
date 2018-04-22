@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Like;
+use App\Reply;
+use App\User;
 use Auth;
 use Session;
 
@@ -30,7 +32,14 @@ class likesController extends Controller
      */
     public function create()
     {
-        //
+        $users =User::all();
+        $replies =Reply::all();
+        
+        return view('admin.likes.create')->with([
+            'users' => $users,
+            'replies' => $replies
+        ]);
+        
     }
 
     /**
@@ -43,12 +52,14 @@ class likesController extends Controller
     {
         
         $this->validate($request, [
+            'user_id' => 'required|integer'
             'reply_id' => 'required|integer'
         ]);
         
         $like =new Like;
-        $like->user_id =Auth::id();
+        $like->user_id =$request->user_id;
         $like->reply_id =$request->reply_id;
+        $like->save();
         
         return redirect()->back();
         
@@ -74,7 +85,16 @@ class likesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $like =Like::find($id);
+        $users =User::all();
+        $replies =Reply::all();
+        
+        return view('admin.likes.edit')->with([
+            'like' => $like,
+            'users' => $users,
+            'replies' => $replies
+        ]);
+        
     }
 
     /**
@@ -87,12 +107,14 @@ class likesController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
+            'user_id' => 'required|integer'
             'reply_id' => 'required|integer'
         ]);
         
         $like =Like::find($id);
-        $like->user_id =Auth::id();
+        $like->user_id =$request->user_id;
         $like->reply_id =$request->reply_id;
+        $like->save();
         
         return redirect()->back();
     }

@@ -46,7 +46,7 @@ Route::group(['prefix' => 'dashboard'], function(){
     Route::resource('likes', 'likesController');
     
     /// Watchers
-    Route::resource('Watchers', 'watchersController');
+    Route::resource('watchers', 'watchersController');
     
     
 });
@@ -73,3 +73,36 @@ Route::get('/{channel}/discussions', [
     'uses' => 'frontendController@channelDiscussions',
     'as' => 'channel.discussions'
 ]);
+
+
+/// create a  comment
+Route::post('/reply', [
+    'uses' => 'frontendController@addReply',
+    'as' => 'reply'
+]);
+
+
+/// like a reply
+Route::get('/like/{id}', [
+    'uses' => 'frontendController@likeReply',
+    'as' => 'reply.like'
+]);
+/// unlike a reply
+Route::get('/unlike/{id}', [
+    'uses' => 'frontendController@unlikeReply',
+    'as' => 'reply.unlike'
+]);
+
+
+/// watch a discussion
+Route::get('/watch/{id}', [
+    'uses' => 'frontendController@watchDiscussion',
+    'as' => 'watch'
+]);
+/// unwatch a discussion
+Route::get('/unwatch/{id}', [
+    'uses' => 'frontendController@unwatchDiscussion',
+    'as' => 'unwatch'
+]);
+
+

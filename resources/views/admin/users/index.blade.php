@@ -28,7 +28,7 @@
                     <tr>
                         <td>{{ $user->id }}</td>
                         <td>{{ $user->name }}</td>
-                        <td><img src="{{ asset($user->avatar) }}" width="80px"></td>
+                        <td><img src="{{ asset($user->avatar) }}" style="width:80px;"></td>
                         <td><a href="{{ route('users.edit', ['id' => $user->id]) }}" class="btn btn-info">Edit</a></td>
                         <td>
                             <form action="{{ route('users.destroy', ['id' => $user->id]) }}" method="post">

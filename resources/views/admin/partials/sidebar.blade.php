@@ -12,51 +12,51 @@
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <li class="active">
-                        <a href="dashboard.html">
+                        <a href="{{ route('dashboard') }}">
                             <i class="material-icons">dashboard</i>
                             <p>Dashboard</p>
                         </a>
                     </li>
                     <li>
-                        <a href="./user.html">
+                        <a href="{{ route('users.index') }}">
                             <i class="material-icons">person</i>
-                            <p>User Profile</p>
+                            <p>Users</p>
                         </a>
                     </li>
                     <li>
-                        <a href="./table.html">
+                        <a href="{{ route('channels.index') }}">
                             <i class="material-icons">content_paste</i>
-                            <p>Table List</p>
+                            <p>Channels</p>
                         </a>
                     </li>
                     <li>
-                        <a href="./typography.html">
+                        <a href="{{ route('discussions.index') }}">
                             <i class="material-icons">library_books</i>
-                            <p>Typography</p>
+                            <p>Discussions</p>
                         </a>
                     </li>
                     <li>
-                        <a href="./icons.html">
+                        <a href="{{ route('replies.index') }}">
                             <i class="material-icons">bubble_chart</i>
-                            <p>Icons</p>
+                            <p>Replies</p>
                         </a>
                     </li>
                     <li>
-                        <a href="./maps.html">
+                        <a href="{{ route('likes.index') }}">
+                            <i class="material-icons">bubble_chart</i>
+                            <p>Likes</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('watchers.index') }}">
                             <i class="material-icons">location_on</i>
-                            <p>Maps</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="./notifications.html">
-                            <i class="material-icons text-gray">notifications</i>
-                            <p>Notifications</p>
+                            <p>Watchers</p>
                         </a>
                     </li>
                     <li class="active-pro">
                         <a href="upgrade.html">
                             <i class="material-icons">unarchive</i>
-                            <p>Upgrade to PRO</p>
+                            <p>Logout</p>
                         </a>
                     </li>
                 </ul>
