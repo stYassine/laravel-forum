@@ -16,8 +16,13 @@
                     <p>{{ $discussion->body }}</p>
                 </div>
                 <div class="panel-footer">
-                    <a href="#" class="btn btn-info">Watch</a>
-                    <a href="#" class="btn btn-danger">UnWatch</a>
+                    @if(Auth::check())
+                        @if($discussion->is_watched_by_auth())
+                            <a href="{{ route('watch', ['id' => $discussion->id]) }}" class="btn btn-danger btn-xs">UnWatch</a>
+                        @else
+                            <a href="{{ route('unwatch', ['id' => $discussion->id]) }}" class="btn btn-info btn-xs">Watch</a>
+                        @endif
+                    @endif
                 </div>
             </div>
             @endif
@@ -28,29 +33,30 @@
                 <div class="panel-heading">
                   <h4>Create New Comment</h4>
                 </div>
-
+                
+                
                 <div class="panel-body">
 
+                    @if(Auth::check())
+                    
                     <form action="{{ route('reply') }}" method="post">
                         {{ csrf_field() }}
                         
                         <input type="hidden" name="discussion_id" value="{{ $discussion->id }}">
+                        
                         <div class="form-group">
-                            <textarea name="body" class="form-control" rows="5" placeholder="Comment...">
-
-                            </textarea>
+                            <textarea name="body" class="form-control" rows="5" placeholder="Comment..."></textarea>
                         </div>
 
 
-
-                </div>
-                <div class="panel-footer">
-
-                    <div class="form-group">
-                            <button class="btn btn-success">Create</button>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Create</button>
                         </div>
 
                     </form>
+                    @else
+                        <a href="{{ route('login') }}">Login</a>
+                    @endif    
 
                 </div>
             </div>
@@ -61,19 +67,21 @@
             <!-- All Comments -->
             @if(count($discussion->replies) > 0)
                 @foreach($discussion->replies as $key => $reply)
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <img src="{{ asset($reply->user->avatar) }}" style="width:40px;">
-                    {{ $reply->user->name }}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <img src="{{ asset($reply->user->avatar) }}" style="width:40px;">
+                        {{ $reply->user->name }}
+                    </div>
+                    <div class="panel-body">
+                        <p>{{ $reply->body }}</p>
+                    </div>
+                    <div class="panel-footer">
+                        @if(Auth::check())
+                            <a href="{{ route('reply.like', ['id' => $reply->id]) }}" class="btn btn-info btn-xs">Like '0'</a>
+                            <a href="{{ route('reply.unlike', ['id' => $reply->id]) }}" class="btn btn-danger btn-xs">UnLike</a>
+                        @endif
+                    </div>
                 </div>
-                <div class="panel-body">
-                    <p>{{ $reply->body }}</p>
-                </div>
-                <div class="panel-footer">
-                    <a href="#" class="btn btn-info">Like  '0'</a>
-                    <a href="#" class="btn btn-danger">UnLike</a>
-                </div>
-            </div>
                 @endforeach
             @endif
             <!-- END All Comments -->

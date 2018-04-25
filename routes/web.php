@@ -23,7 +23,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 ///////////////////////
 /// Admin
 ///////////////////////
-Route::group(['prefix' => 'dashboard'], function(){
+Route::group(['prefix' => 'dashboard', 'middleware' => 'admin'], function(){
 
     Route::get('/', [
         'uses' => 'DashboardController@dashboardPage',
@@ -106,3 +106,27 @@ Route::get('/unwatch/{id}', [
 ]);
 
 
+///////////////////////////////////////////////////////
+/// PROFILE
+///////////////////////////////////////////////////////
+
+/// upload avatar
+Route::post('/avatar/upload', [
+    'uses' => 'frontendController@upload_new_avatar',
+    'as' => 'avatar.upload'
+]);
+/// profile discussions
+Route::get('/profile/{id}/discussions', [
+    'uses' => 'frontendController@profileDiscussions',
+    'as' => 'profile.discussions'
+]);
+/// profile replies
+Route::get('/profile/{id}/replies', [
+    'uses' => 'frontendController@profileReplies',
+    'as' => 'profile.replies'
+]);
+/// profile likes
+Route::get('/profile/{id}/likes', [
+    'uses' => 'frontendController@profileLikes',
+    'as' => 'profile.likes'
+]);

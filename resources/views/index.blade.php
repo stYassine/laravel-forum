@@ -3,6 +3,8 @@
 @section('content')
 
     <div class="col-md-12">
+       
+       <h4>All Discussions</h4>
 
        @if(isset($discussions))
            @foreach($discussions->all() as $discussion)

@@ -2,13 +2,12 @@
 
 @section('content')
 
-           
-        <div class="col-md-12">
-            
-            <h4>{{ $channel->title }} Discussions</h4>
+    <div class="col-md-12">
+       
+       <h4>{{ $user->name }} Discussions</h4>
 
            @if(isset($discussions))
-           @foreach($discussions->all() as $discussion)
+               @foreach($discussions->all() as $discussion)
             <div class="panel panel-default">
                 <div class="panel-heading">
                     {{ $discussion->title }}
@@ -23,10 +22,10 @@
                     <span class="pull-right"><a href="{{ route('single', ['slug' => $discussion->slug]) }}">View</a></span>
                 </div>
             </div>
-            @endforeach
-        @endif
+                @endforeach
+            @endif
 
     </div>
-            
         
+   
 @endsection

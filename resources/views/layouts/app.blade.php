@@ -52,6 +52,7 @@
                                 </a>
 
                                 <ul class="dropdown-menu">
+                                   <li><a href="{{ route('home') }}">Profile</a></li>
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
@@ -78,7 +79,11 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Channels</div>
                         <div class="panel-body">
-                            
+                            <ul class="list-group">
+                            @foreach($channels->all() as $channel)
+                                <li class="list-group-item"><a href="{{ route('channel.discussions', ['slug' => $channel->slug]) }}">{{ $channel->title }}</a></li>    
+                            @endforeach
+                            </ul>
                         </div>
                     </div>
                 </div>

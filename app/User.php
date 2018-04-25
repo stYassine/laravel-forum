@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use Auth;
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -15,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'is_active', 'is_admin', 'avatar'
     ];
 
     /**
@@ -42,6 +44,30 @@ class User extends Authenticatable
     
     public function likes(){
         return $this->hasMany(Like::class);
+    }
+    
+    public function is_admin(){
+        
+        $user =Auth::user();
+        
+        if($user->is_admin){
+            return true;
+        }else{
+            return false;
+        }
+        
+    }
+    
+    public function is_active(){
+        
+        $user =Auth::user();
+        
+        if($user->is_active){
+            return true;
+        }else{
+            return false;
+        }
+        
     }
     
     
